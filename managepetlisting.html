@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Pet Listings - PawConnect</title>
+    <link rel="stylesheet" href="managepetlisting.css">
+</head>
+<body>
+    <!-- Wrapper for Flexbox -->
+    <div class="wrapper">
+        <!-- Header -->
+        <header>
+            <nav>
+                <div class="logo">
+                    <img src="logo.png" alt="PawConnect Logo">
+                </div>
+                <ul>
+                    <li><a href="admin-dashboard.html">Dashboard</a></li>
+                    <li><a href="manage-pet-listings.html" class="active">Manage Pet Listings</a></li>
+                    <li><a href="review-adoption-requests.html">Review Adoption Requests</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="manage-pet-listings">
+            <h1>Manage Pet Listings</h1>
+
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" placeholder="Search pets by name, breed, or status...">
+                <button class="btn btn-primary">Search</button>
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+                <button class="btn btn-primary">Add New Pet</button>
+                <button class="btn btn-secondary">Edit Pet Details</button>
+                <button class="btn btn-danger">Delete Listing</button>
+                <button class="btn btn-secondary">Update Pet Status</button>
+            </div>
+
+            <!-- Statistics -->
+            <div class="statistics">
+                <div class="stat-card">
+                    <h3>Total Pets</h3>
+                    <p>120</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Available Pets</h3>
+                    <p>85</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Adopted Pets</h3>
+                    <p>35</p>
+                </div>
+            </div>
+
+            <!-- Pet List -->
+            <div class="pet-list">
+                <div class="pet-card">
+                    <div class="pet-image">
+                        <img src="pet1.jpg" alt="Buddy">
+                    </div>
+                    <div class="pet-details">
+                        <h3>Buddy</h3>
+                        <p><strong>Breed:</strong> Golden Retriever</p>
+                        <p><strong>Age:</strong> 2 years</p>
+                        <p><strong>Status:</strong> Available</p>
+                    </div>
+                </div>
+                <div class="pet-card">
+                    <div class="pet-image">
+                        <img src="pet2.jpg" alt="Max">
+                    </div>
+                    <div class="pet-details">
+                        <h3>Max</h3>
+                        <p><strong>Breed:</strong> German Shepherd</p>
+                        <p><strong>Age:</strong> 3 years</p>
+                        <p><strong>Status:</strong> Pending Adoption</p>
+                    </div>
+                </div>
+                <div class="pet-card">
+                    <div class="pet-image">
+                        <img src="pet3.jpg" alt="Luna">
+                    </div>
+                    <div class="pet-details">
+                        <h3>Luna</h3>
+                        <p><strong>Breed:</strong> Siamese Cat</p>
+                        <p><strong>Age:</strong> 1 year</p>
+                        <p><strong>Status:</strong> Available</p>
+                    </div>
+                </div>
+                <!-- Add more pet cards here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 PawConnect. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
+            <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
+            <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
+        </div>
+    </footer>
+</body>
+</html>

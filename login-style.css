@@ -1,0 +1,87 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.8;
+    color: #333;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Authentication Container */
+.auth-container {
+    background-color: #ffffff;
+    padding: 5rem; /* Increased padding for a bigger box */
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    max-width: 600px; /* Made the box wider */
+    width: 100%;
+}
+
+/* Heading Styles */
+h2 {
+    font-size: 2.5rem; /* Larger title */
+    margin-bottom: 2rem;
+    font-weight: bold;
+}
+
+h3 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+/* Form Styling */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+input {
+    width: 100%;
+    padding: 1.2rem;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    font-size: 1.3rem; /* Bigger text inside input */
+}
+
+/* Button Styling */
+button {
+    width: 100%;
+    padding: 1.2rem;
+    background-color: #ee6cb4;
+    color: #ffffff;
+    font-size: 1.4rem; /* Larger button text */
+    font-weight: bold;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #697de2;
+}
+
+/* Error Message */
+.error-message {
+    color: red;
+    font-size: 1.2rem; /* Bigger error text */
+    margin-top: 0.8rem;
+}

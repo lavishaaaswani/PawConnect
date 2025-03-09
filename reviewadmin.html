@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Adoption Requests - PawConnect</title>
+    <link rel="stylesheet" href="review.css">
+</head>
+<body>
+    <!-- Wrapper for Flexbox -->
+    <div class="wrapper">
+        <!-- Header -->
+        <header>
+            <nav>
+                <div class="logo">
+                    <img src="logo.png" alt="PawConnect Logo">
+                </div>
+                <ul>
+                    <li><a href="admin-dashboard.html">Dashboard</a></li>
+                    <li><a href="manage-pet-listings.html">Manage Pet Listings</a></li>
+                    <li><a href="review-adoption-requests.html" class="active">Review Adoption Requests</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="review-adoption-requests">
+            <h1>Review Adoption Requests</h1>
+
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <input type="text" placeholder="Search requests by user or pet...">
+                <button class="btn btn-primary">Search</button>
+            </div>
+
+            <!-- Adoption Requests List -->
+            <div class="requests-list">
+                <div class="request-card">
+                    <h3>Request #123</h3>
+                    <p><strong>Pet:</strong> Buddy (Golden Retriever)</p>
+                    <p><strong>User:</strong> John Doe</p>
+                    <p><strong>Status:</strong> Pending</p>
+                    <div class="request-actions">
+                        <button class="btn btn-primary">Approve</button>
+                        <button class="btn btn-danger">Reject</button>
+                    </div>
+                </div>
+                <div class="request-card">
+                    <h3>Request #124</h3>
+                    <p><strong>Pet:</strong> Max (German Shepherd)</p>
+                    <p><strong>User:</strong> Jane Smith</p>
+                    <p><strong>Status:</strong> Approved</p>
+                    <div class="request-actions">
+                        <button class="btn btn-primary">Approve</button>
+                        <button class="btn btn-danger">Reject</button>
+                    </div>
+                </div>
+                <div class="request-card">
+                    <h3>Request #125</h3>
+                    <p><strong>Pet:</strong> Luna (Siamese Cat)</p>
+                    <p><strong>User:</strong> Alice Johnson</p>
+                    <p><strong>Status:</strong> Pending</p>
+                    <div class="request-actions">
+                        <button class="btn btn-primary">Approve</button>
+                        <button class="btn btn-danger">Reject</button>
+                    </div>
+                </div>
+                <!-- Add more request cards here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2023 PawConnect. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><img src="facebook-icon.png" alt="Facebook"></a>
+            <a href="#"><img src="twitter-icon.png" alt="Twitter"></a>
+            <a href="#"><img src="instagram-icon.png" alt="Instagram"></a>
+        </div>
+    </footer>
+</body>
+</html>

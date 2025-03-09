@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PawConnect</title>
+    <link rel="stylesheet" href="signupstyle.css">
+</head>
+<body>
+
+    <div class="signup-container">
+        <h2>Sign Up</h2>
+        <div class="form-container">
+            <form id="signup-form" onsubmit="return validateSignUp()">
+                <input type="text" id="name" placeholder="Full Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password (min 6 chars)" required>
+                <button type="submit">Sign Up</button>
+                <p id="signup-error" class="error-message"></p>
+            </form>
+            <p>Already have an account? <a href="login.html">Login here</a></p>
+        </div>
+    </div>
+
+    <script>
+        function validateSignUp() {
+            const name = document.getElementById("name").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+            const errorMessage = document.getElementById("signup-error");
+
+            // Reset error message
+            errorMessage.textContent = "";
+
+            // Check if all fields are filled
+            if (!name || !email || !password) {
+                errorMessage.textContent = "All fields are required.";
+                return false;
+            }
+
+            // Validate email format
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                errorMessage.textContent = "Enter a valid email.";
+                return false;
+            }
+
+            // Validate password length
+            if (password.length < 6) {
+                errorMessage.textContent = "Password must be at least 6 characters.";
+                return false;
+            }
+
+            // If all validations pass
+            return true;
+        }
+    </script>
+
+</body>
+</html>
