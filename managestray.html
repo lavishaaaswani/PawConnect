@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stray Reports - PawConnect Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ee6cb4;
+            --primary-dark: #d45b9d;
+            --secondary: #697de2;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Side Navigation */
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo img {
+            max-width: 150px;
+            height: auto;
+        }
+
+        nav ul {
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-bottom: 1rem;
+        }
+
+        nav ul li a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #555;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        nav ul li a:hover, 
+        nav ul li a.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+
+        h1 {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--primary);
+        }
+
+        /* Filters */
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .search-bar {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px 0 0 6px;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            padding: 0 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: var(--gray);
+        }
+
+        .filter-group select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+        }
+
+        /* Reports Grid */
+        .reports-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .report-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .report-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .report-header {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .report-id {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .report-date {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .report-body {
+            padding: 1.5rem;
+        }
+
+        .report-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .map-placeholder {
+            height: 200px;
+            background-color: #eee;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .detail-row {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            min-width: 120px;
+            color: var(--gray);
+        }
+
+        .detail-value {
+            flex: 1;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .status-new {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-in-progress {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-resolved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .status-urgent {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Action Buttons */
+        .report-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6fd1;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .wrapper {
+                flex-direction: column;
+            }
+            
+            header {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+            }
+            
+            main {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+            
+            .logo img {
+                max-width: 120px;
+            }
+            
+            nav ul {
+                display: flex;
+                gap: 0.5rem;
+            }
+            
+            nav ul li {
+                margin-bottom: 0;
+            }
+            
+            nav ul li a {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .reports-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .filters {
+                flex-direction: column;
+            }
+            
+            .search-bar {
+                min-width: 100%;
+            }
+            
+            .detail-row {
+                flex-direction: column;
+                gap: 0.25rem;
+            }
+            
+            .detail-label {
+                min-width: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Side Navigation -->
+        <header>
+            <nav>
+                <div class="logo">
+                    <img src="Images/logo.jpeg" alt="PawConnect Logo">
+                </div>
+                <ul>
+                    <li><a href="admin.html">Dashboard</a></li>
+                    <li><a href="manage.html">Manage Listings</a></li>
+                    <li><a href="reviewadoption.html">Adoption Requests</a></li>
+                    <li><a href="strayreports.html" class="active">Stray Reports</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <h1>Stray Animal Reports</h1>
+            
+            <!-- Filters -->
+            <div class="filters">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search by location or animal type...">
+                    <button class="btn btn-primary">Search</button>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="status-filter">Status:</label>
+                    <select id="status-filter">
+                        <option value="all">All Statuses</option>
+                        <option value="new">New</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="resolved">Resolved</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="date-filter">Date:</label>
+                    <select id="date-filter">
+                        <option value="all">All Dates</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Reports Grid -->
+            <div class="reports-grid">
+                <!-- Report 1 -->
+                <div class="report-card">
+                    <div class="report-header">
+                        <span class="report-id">Report #ST-2023-001</span>
+                        <span class="report-date">Today, 10:30 AM</span>
+                    </div>
+                    <div class="report-body">
+                        <img src="Images/stray-dog1.jpg" alt="Stray dog" class="report-image">
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Animal Type:</span>
+                            <span class="detail-value">Dog (Golden Retriever)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Location:</span>
+                            <span class="detail-value">Central Park, near fountain</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Reporter:</span>
+                            <span class="detail-value">John Doe (555-123-4567)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">
+                                <span class="status-badge status-new">New</span>
+                            </span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Description:</span>
+                            <span class="detail-value">Friendly golden retriever with blue collar, appears lost.</span>
+                        </div>
+                        
+                        <div class="report-actions">
+                            <button class="btn btn-success" onclick="updateStatus('ST-2023-001', 'in-progress')">In Progress</button>
+                            <button class="btn btn-secondary" onclick="viewDetails('ST-2023-001')">Details</button>
+                            <button class="btn btn-danger" onclick="markResolved('ST-2023-001')">Resolve</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Report 2 -->
+                <div class="report-card">
+                    <div class="report-header">
+                        <span class="report-id">Report #ST-2023-002</span>
+                        <span class="report-date">Yesterday, 3:45 PM</span>
+                    </div>
+                    <div class="report-body">
+                        <div class="map-placeholder">
+                            [Map showing location]
+                        </div>
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Animal Type:</span>
+                            <span class="detail-value">Cat (Tabby)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Location:</span>
+                            <span class="detail-value">123 Main St, Brooklyn</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Reporter:</span>
+                            <span class="detail-value">Jane Smith (jane@example.com)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">
+                                <span class="status-badge status-in-progress">In Progress</span>
+                            </span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Description:</span>
+                            <span class="detail-value">Injured tabby cat, limping on front right paw.</span>
+                        </div>
+                        
+                        <div class="report-actions">
+                            <button class="btn btn-primary" onclick="assignTeam('ST-2023-002')">Assign Team</button>
+                            <button class="btn btn-secondary" onclick="viewDetails('ST-2023-002')">Details</button>
+                            <button class="btn btn-success" onclick="updateStatus('ST-2023-002', 'resolved')">Resolve</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Report 3 -->
+                <div class="report-card">
+                    <div class="report-header">
+                        <span class="report-id">Report #ST-2023-003</span>
+                        <span class="report-date">May 12, 6:20 PM</span>
+                    </div>
+                    <div class="report-body">
+                        <img src="Images/stray-cat1.jpg" alt="Stray cat" class="report-image">
+                        
+                        <div class="detail-row">
+                            <span class="detail-label">Animal Type:</span>
+                            <span class="detail-value">Cat (Siamese)</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Location:</span>
+                            <span class="detail-value">Riverside Park, Manhattan</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Reporter:</span>
+                            <span class="detail-value">Anonymous</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">
+                                <span class="status-badge status-resolved">Resolved</span>
+                            </span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Description:</span>
+                            <span class="detail-value">Aggressive cat, appears to be injured.</span>
+                        </div>
+                        
+                        <div class="report-actions">
+                            <button class="btn btn-secondary" onclick="viewDetails('ST-2023-003')">Details</button>
+                            <button class="btn btn-danger" onclick="reopenCase('ST-2023-003')">Reopen</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Update report status
+        function updateStatus(reportId, status) {
+            if (confirm(`Change status of ${reportId} to ${status}?`)) {
+                console.log(`Updated ${reportId} to ${status}`);
+                // In real app: AJAX call to backend
+                alert(`Report ${reportId} marked as ${status}`);
+                location.reload(); // Refresh to show changes
+            }
+        }
+
+        // View detailed report
+        function viewDetails(reportId) {
+            console.log(`Viewing details for ${reportId}`);
+            // In real app: Open modal with full details
+            alert(`Would show full details for ${reportId}`);
+        }
+
+        // Assign rescue team
+        function assignTeam(reportId) {
+            const team = prompt(`Which team should handle ${reportId}?`);
+            if (team) {
+                console.log(`Assigned ${team} to ${reportId}`);
+                alert(`${team} dispatched to ${reportId}`);
+            }
+        }
+
+        // Mark report as resolved
+        function markResolved(reportId) {
+            const notes = prompt("Resolution notes:");
+            if (notes !== null) {
+                console.log(`Resolved ${reportId} with notes: ${notes}`);
+                alert(`Report ${reportId} resolved!`);
+                location.reload();
+            }
+        }
+
+        // Reopen closed case
+        function reopenCase(reportId) {
+            if (confirm(`Reopen case ${reportId}?`)) {
+                console.log(`Reopened ${reportId}`);
+                alert(`Case ${reportId} reopened as "New"`);
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

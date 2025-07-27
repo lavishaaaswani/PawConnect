@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pets Available for Adoption</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="viewstyle.css"> <!-- Link to external CSS file -->
+    <style>
+        /* ===== Base Styles ===== */
+        :root {
+            --primary: #ee6cb4;
+            --primary-light: #ff9fd4;
+            --primary-dark: #d45b9d;
+            --secondary: #697de2;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+            --white: #ffffff;
+            --black: #000000;
+        }
+    
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+    
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+    
+        /* ===== Header Styles ===== */
+        header {
+            background-color: var(--white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+    
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+            justify-content: center;
+        }
+    
+        nav ul li a {
+            color: var(--dark);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+    
+        nav ul li a:hover {
+            color: var(--primary);
+            background-color: rgba(238, 108, 180, 0.1);
+        }
+    
+        /* ===== Main Content Styles ===== */
+        .adopt {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+    
+        .adopt h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+        }
+    
+        .adopt__intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            padding: 0 1rem;
+        }
+    
+        .adopt__quote {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            font-style: italic;
+        }
+    
+        .adopt__instructions {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+    
+        /* ===== Filter Styles ===== */
+        .filter-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            align-items: center;
+        }
+    
+        .filter__label {
+            font-weight: 500;
+            color: var(--dark);
+            margin-right: 0.5rem;
+        }
+    
+        .filter__select, #location-filter {
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            background-color: var(--white);
+            min-width: 200px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .filter__select:focus, #location-filter:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(238, 108, 180, 0.2);
+        }
+    
+        /* ===== Pet Grid Styles ===== */
+        .pet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+    
+        .pet-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        .pet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+    
+        .pet-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-bottom: 1px solid #eee;
+        }
+    
+        .pet-card h3 {
+            font-size: 1.5rem;
+            margin: 1rem 1rem 0.5rem;
+            color: var(--dark);
+        }
+    
+        .pet-card p {
+            margin: 0.5rem 1rem;
+            color: var(--gray);
+        }
+    
+        .pet-card p strong {
+            color: var(--dark);
+        }
+    
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            margin: 1rem;
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+    
+        .btn:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    
+        .adopt-btn {
+            width: calc(100% - 2rem);
+        }
+    
+        /* ===== Modal Styles ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            overflow-y: auto;
+            padding: 2rem 0;
+        }
+    
+        .modal-content {
+            background-color: var(--white);
+            border-radius: 15px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow-y: auto;
+        }
+    
+        .modal-content h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-dark);
+        }
+    
+        .modal-content p {
+            font-size: 1.1rem;
+            color: var(--gray);
+            margin: 0.75rem 0;
+        }
+    
+        .modal-content p strong {
+            color: var(--dark);
+        }
+    
+        .close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--gray);
+            transition: all 0.3s ease;
+            line-height: 1;
+        }
+    
+        .close:hover {
+            color: var(--primary);
+            transform: scale(1.1);
+        }
+    
+        /* ===== Form Styles ===== */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+    
+        .form-group label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+    
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+    
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+    
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(238, 108, 180, 0.2);
+        }
+    
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            margin: 1.5rem 0;
+        }
+    
+        .checkbox-group input {
+            margin-right: 0.75rem;
+            margin-top: 0.25rem;
+        }
+    
+        .checkbox-group label {
+            font-weight: normal;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+    
+        .checkbox-group a {
+            color: var(--primary);
+            font-weight: 600;
+            text-decoration: none;
+        }
+    
+        .checkbox-group a:hover {
+            text-decoration: underline;
+        }
+    
+        /* ===== Footer Styles ===== */
+        footer {
+            background-color: var(--dark);
+            color: var(--white);
+            text-align: center;
+            padding: 2rem;
+            margin-top: auto;
+        }
+    
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+    
+        .social-links img {
+            width: 32px;
+            height: 32px;
+            transition: transform 0.3s ease;
+        }
+    
+        .social-links img:hover {
+            transform: scale(1.1);
+        }
+    
+        /* ===== Responsive Styles ===== */
+        @media (max-width: 992px) {
+            .pet-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+    
+        @media (max-width: 768px) {
+            .adopt {
+                padding: 1.5rem;
+            }
+    
+            .adopt h2 {
+                font-size: 2rem;
+            }
+    
+            .adopt__quote {
+                font-size: 1.3rem;
+            }
+    
+            .modal-content {
+                padding: 2rem 1.5rem;
+                width: 95%;
+            }
+    
+            .modal-content h2 {
+                font-size: 1.8rem;
+            }
+    
+            .filter-group {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+    
+            .filter__select, #location-filter {
+                width: 100%;
+            }
+        }
+    
+        @media (max-width: 576px) {
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: center;
+            }
+    
+            .pet-card img {
+                height: 200px;
+            }
+    
+            .modal-content {
+                padding: 1.5rem;
+            }
+        }
+    
+        /* ===== Animations ===== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    
+        .pet-card {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="landing.html">Home</a></li>
+                <li><a href="#adopt">Adopt</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <section class="adopt" id="adopt">
+        
+        <h2>Adopt Now!</h2>
+            
+            <div class="adopt__intro">
+                <h3 class="adopt__quote">"Saving one pet won't change the world, but surely the world will change for that one pet."</h3>
+            </div>
+            
+        <label for="location-filter"> Filter by Location:</label>
+        <select id="location-filter">
+            <option value="all">All Locations</option>
+            <option value="New York">New York</option>
+            <option value="Los Angeles">Los Angeles</option>
+            <option value="Chicago">Chicago</option>
+            <option value="Houston">Houston</option>
+        </select>
+
+        <label for="species-filter" class="filter__label"> Filter by Species:</label>
+        <select id="species-filter" class="filter__select">
+            <option value="all">All Species</option>
+            <option value="dog">Dogs</option>
+            <option value="cat">Cats</option>
+            <option value="rabbit">Rabbits</option>
+            <option value="other">Other</option>
+        </select>
+
+
+        <label for="breed-filter" class="filter__label"> Filter by Breed:</label>
+        <select id="breed-filter" class="filter__select" disabled>
+            <option value="all">All Breeds</option>
+            <!-- Options will be populated by JavaScript -->
+        </select>
+        
+        <div class="pet-grid">
+            <!-- Pet Cards -->
+            <div class="pet-card" data-location="New York">
+                <img src="Images/dog1.jpg" alt="Pet 1">
+                <h3>Buddy</h3>
+                <p>Breed: Golden Retriever</p>
+                <p>Friendly and playful dog, 2 years old.</p>
+                <p><strong>Location:</strong> New York</p>
+                <button class="btn adopt-btn">Adopt Me</button>
+            </div>
+            <div class="pet-card" data-location="Los Angeles">
+                <img src="images/besttabby.jpg" alt="Pet 2">
+                <h3>Luna</h3>
+                <p>Breed: Siamese Cat</p>
+                <p>Gentle and affectionate cat, 1 year old.</p>
+                <p><strong>Location:</strong> Los Angeles</p>
+                <button class="btn adopt-btn">Adopt Me</button>
+            </div>
+            <div class="pet-card" data-location="Chicago">
+                <img src="images/german.jpg" style="height: 20 px" alt="Pet 3">
+                <h3>Max</h3>
+                <p>Breed: German Shepherd</p>
+                <p>Energetic and loyal dog, 3 years old.</p>
+                <p><strong>Location:</strong> Chicago</p>
+                <button class="btn adopt-btn">Adopt Me</button>
+            </div>
+            <div class="pet-card" data-location="Houston">
+                <img src="Images/cat1.jpg" alt="Pet 4">
+                <h3>Milo</h3>
+                <p>Breed: Maine Coon</p>
+                <p>Curious and playful kitten, 6 months old.</p>
+                <p><strong>Location:</strong> Houston</p>
+                <button class="btn adopt-btn">Adopt Me</button>
+            </div>
+            <div class="pet-card" data-location="New York">
+                <img src="images/rabbit.jpg" alt="Pet 5">
+                <h3>Daisy</h3>
+                <p>Breed: Holland Lop Rabbit</p>
+                <p>Sweet and calm rabbit, 1.5 years old.</p>
+                <p><strong>Location:</strong> New York</p>
+                <button class="btn adopt-btn">Adopt Me</button>
+            </div>
+            <div class="pet-card" data-location="Los Angeles">
+                <img src="Images/boxer.jpg" alt="Pet 6">
+                <h3>Rocky</h3>
+                <p>Breed: Boxer</p>
+                <p>Strong and brave dog, 4 years old.</p>
+                <p><strong>Location:</strong> Los Angeles</p>
+                <button class="btn adopt-btn">Adopt Me</button>
+            </div>
+            <div class="pet-card" data-location="Chicago">
+                <img src="Images/rabbit2.jpg" alt="Pet 7">
+                <h3>Snowball</h3>
+                <p>Breed: Angora Rabbit</p>
+                <p>Fluffy and adorable bunny, 8 months old.</p>
+                <p><strong>Location:</strong> Chicago</p>
+                <button class="btn adopt-btn">Adopt Me</button>
+            </div>
+            <div class="pet-card" data-location="Houston">
+                <img src="Images/cat3.jpg" alt="Pet 8">
+                <h3>Simba</h3>
+                <p>Breed: Persian Cat</p>
+                <p>Majestic and affectionate cat, 2 years old.</p>
+                <p><strong>Location:</strong> Houston</p>
+                <button class="btn adopt-btn">Adopt Me</button>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Modal -->
+<div id="adopt-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-pet-name"></h2>
+        <p><strong>Breed:</strong> <span id="modal-pet-breed"></span></p>
+        <p><strong>Age:</strong> <span id="modal-pet-age"></span></p>
+        <p><strong>Location:</strong> <span id="modal-pet-location"></span></p>
+        <form id="adoption-form">
+            <div class="form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" placeholder="Your full name" required>
+            </div>
+            
+            
+            <div class="form-group">
+                <label for="phone">Contact Number</label>
+                <input type="tel" id="phone" name="phone" placeholder="e.g. 9876543210" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="address">Residential Address</label>
+                <textarea id="address" name="address" rows="3" placeholder="Enter your address" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="occupation">Occupation</label>
+                <input type="text" id="occupation" name="occupation" placeholder="Your occupation">
+            </div>
+            
+            <div class="form-group">
+                <label for="houseType">Type of Residence</label>
+                <select id="houseType" name="houseType" required>
+                    <option value="">Select residence type</option>
+                    <option value="house">House</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="condo">Condo</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="ownership">Do you own or rent?</label>
+                <select id="ownership" name="ownership" required>
+                    <option value="">Select ownership status</option>
+                    <option value="own">Own</option>
+                    <option value="rent">Rent</option>
+                    <option value="live_with_family">Live with family</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="reason">Why do you want to adopt?</label>
+                <textarea id="reason" name="reason" rows="4" placeholder="Write a short answer" required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="experience">Do you have prior experience with pets?</label>
+                <select id="experience" name="experience" required>
+                    <option value="">Select experience level</option>
+                    <option value="none">No experience</option>
+                    <option value="some">Some experience</option>
+                    <option value="experienced">Very experienced</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="currentPets">Do you currently have other pets?</label>
+                <select id="currentPets" name="currentPets" required>
+                    <option value="">Select option</option>
+                    <option value="none">No other pets</option>
+                    <option value="dogs">Dogs</option>
+                    <option value="cats">Cats</option>
+                    <option value="other">Other pets</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="hoursAlone">How many hours will the pet be alone daily?</label>
+                <input type="number" id="hoursAlone" name="hoursAlone" min="0" max="24" required>
+            </div>
+            
+            <div class="form-group checkbox-group">
+                <label>
+                    <input type="checkbox" name="terms" required>
+                    I agree to the <a href="#">Terms of Adoption</a> and confirm all information is accurate
+                </label>
+            </div>
+            
+            <button type="submit" class="btn">Submit Adoption Application</button>
+        </form>
+    </div>
+</div>
+    
+    <footer>
+        <p>&copy; 2025 Pet Adoption Center. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><img src="Images/facebook.png" alt="Facebook"></a>
+            <a href="#"><img src="Images/instagram.png" alt="Instagram"></a>
+            <a href="#"><img src="Images/twitter.png" alt="Twitter"></a>
+        </div>
+    </footer>
+    <script>
+        // -------------------- Fetch Approved Pets --------------------
+        async function fetchApprovedPets() {
+            try {
+                const response = await fetch('/api/pets/approved');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch pets');
+                }
+                const pets = await response.json();
+                renderPets(pets);
+                setupFilters(pets);
+            } catch (error) {
+                console.error('Error fetching pets:', error);
+                alert('Could not load pets. Please try again later.');
+            }
+        }
+    
+        // -------------------- Render Pets --------------------
+        function renderPets(pets) {
+            const petGrid = document.querySelector('.pet-grid');
+            petGrid.innerHTML = ''; // Clear existing pets
+    
+            pets.forEach(pet => {
+                const petCard = document.createElement('div');
+                petCard.className = 'pet-card';
+                petCard.dataset.location = pet.location;
+                petCard.dataset.type = pet.type.toLowerCase();
+                petCard.dataset.breed = pet.breed.toLowerCase();
+    
+                petCard.innerHTML = `
+                    <img src="/uploads/${pet.image}" alt="${pet.name}">
+                    <h3>${pet.name}</h3>
+                    <p>Breed: ${pet.breed}</p>
+                    <p>${pet.description}</p>
+                    <p><strong>Location:</strong> ${pet.location}</p>
+                    <button class="btn adopt-btn">Adopt Me</button>
+                `;
+                petGrid.appendChild(petCard);
+            });
+    
+            // Reattach event listeners to new buttons
+            setupAdoptButtons();
+        }
+    
+        // -------------------- Filter Setup --------------------
+        function setupFilters(pets) {
+            // Get unique locations, types, and breeds
+            const locations = [...new Set(pets.map(pet => pet.location))];
+            const types = [...new Set(pets.map(pet => pet.type.toLowerCase()))];
+            const breeds = [...new Set(pets.map(pet => pet.breed))];
+    
+            // Location filter
+            const locationFilter = document.getElementById('location-filter');
+            locationFilter.innerHTML = '<option value="all">All Locations</option>';
+            locations.forEach(location => {
+                locationFilter.innerHTML += `<option value="${location}">${location}</option>`;
+            });
+    
+            // Species filter
+            const speciesFilter = document.getElementById('species-filter');
+            speciesFilter.innerHTML = '<option value="all">All Species</option>';
+            types.forEach(type => {
+                speciesFilter.innerHTML += `<option value="${type}">${type.charAt(0).toUpperCase() + type.slice(1)}</option>`;
+            });
+    
+            // Breed filter (initially disabled)
+            const breedFilter = document.getElementById('breed-filter');
+            breedFilter.innerHTML = '<option value="all">All Breeds</option>';
+            breeds.forEach(breed => {
+                breedFilter.innerHTML += `<option value="${breed.toLowerCase()}">${breed}</option>`;
+            });
+            breedFilter.disabled = false;
+    
+            // Filter event listeners
+            locationFilter.addEventListener('change', filterPets);
+            speciesFilter.addEventListener('change', filterPets);
+            breedFilter.addEventListener('change', filterPets);
+        }
+    
+        // -------------------- Filter Logic --------------------
+        function filterPets() {
+            const speciesValue = document.getElementById('species-filter').value.toLowerCase();
+            const breedValue = document.getElementById('breed-filter').value.toLowerCase();
+            const locationValue = document.getElementById('location-filter').value.toLowerCase();
+            const petCards = document.querySelectorAll('.pet-card');
+    
+            petCards.forEach(card => {
+                const matchesSpecies = speciesValue === 'all' || card.dataset.type.includes(speciesValue);
+                const matchesBreed = breedValue === 'all' || card.dataset.breed.includes(breedValue);
+                const matchesLocation = locationValue === 'all' || card.dataset.location.toLowerCase().includes(locationValue);
+    
+                card.style.display = (matchesSpecies && matchesBreed && matchesLocation) ? 'block' : 'none';
+            });
+        }
+    
+        // -------------------- Modal Logic --------------------
+        function setupAdoptButtons() {
+            const modal = document.getElementById("adopt-modal");
+            const adoptButtons = document.querySelectorAll(".adopt-btn");
+            const closeModal = document.querySelector(".close");
+    
+            function openModal(petName, petBreed, petDescription, petLocation) {
+                document.getElementById("modal-pet-name").textContent = petName;
+                document.getElementById("modal-pet-breed").textContent = petBreed;
+                document.getElementById("modal-pet-age").textContent = petDescription;
+                document.getElementById("modal-pet-location").textContent = petLocation;
+                modal.style.display = "flex";
+                document.getElementById("adoption-form").reset();
+            }
+    
+            function closeModalHandler() {
+                modal.style.display = "none";
+            }
+    
+            adoptButtons.forEach((button) => {
+                button.addEventListener("click", () => {
+                    const petCard = button.closest(".pet-card");
+                    const petName = petCard.querySelector("h3").textContent;
+                    const petBreed = petCard.querySelector("p").textContent.replace("Breed: ", "");
+                    const petDescription = petCard.querySelectorAll("p")[1].textContent;
+                    const petLocation = petCard.querySelector("p strong").nextSibling.textContent.trim();
+                    openModal(petName, petBreed, petDescription, petLocation);
+                });
+            });
+    
+            closeModal.addEventListener("click", closeModalHandler);
+            window.addEventListener("click", (event) => {
+                if (event.target === modal) {
+                    closeModalHandler();
+                }
+            });
+        }
+    
+        // -------------------- Form Submission --------------------
+        document.getElementById("adoption-form").addEventListener("submit", async (event) => {
+            event.preventDefault();
+    
+            const formData = {
+                petName: document.getElementById("modal-pet-name").textContent,
+                fullName: document.getElementById("fullName").value,
+                phone: document.getElementById("phone").value,
+                address: document.getElementById("address").value,
+                occupation: document.getElementById("occupation").value,
+                houseType: document.getElementById("houseType").value,
+                ownership: document.getElementById("ownership").value,
+                reason: document.getElementById("reason").value,
+                experience: document.getElementById("experience").value,
+                currentPets: document.getElementById("currentPets").value,
+                hoursAlone: document.getElementById("hoursAlone").value
+            };
+    
+            if (formData.hoursAlone < 0 || formData.hoursAlone > 24) {
+                alert("Please enter a valid number of hours (0-24)");
+                return;
+            }
+    
+            try {
+                const response = await fetch('/api/adoptions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Submission failed');
+                }
+    
+                alert(`Thank you, ${formData.fullName}! Your application for ${formData.petName} has been submitted.`);
+                document.querySelector(".close").click();
+            } catch (error) {
+                console.error('Error submitting form:', error);
+                alert('Submission failed. Please try again.');
+            }
+        });
+    
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', fetchApprovedPets);
+    </script>
+</body>
+</html>

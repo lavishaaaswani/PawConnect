@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PawConnect - Animal Welfare & Adoption</title>
+  <link rel="stylesheet" href="landingstyle.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <nav>
+      <div class="logo">
+        <img src="Images/logo.jpeg" alt="PawConnect Logo">
+      </div>
+      <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="faq.html">FAQ</a></li>
+        <li><a href="#stray">Report Stray</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="logadmin.html" class="btn">Admin Login</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <h1 style="color:floralwhite">Find Your Furry Friend</h1>
+      <p  style="color:floralwhite">Adopt a pet and give them a loving home.</p>
+      <a href="signup.html?role=adopter" class="btn">Adopt Now</a>
+      <a href="signup.html?role=lister" class="btn">List a Pet</a>
+
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about">
+    <div class="about-content">
+      <h2>About PawConnect</h2>
+      <p>PawConnect is a comprehensive platform dedicated to pet adoption and animal welfare.
+        We collaborate with shelters and rescue groups to rehome abandoned and stray animals.
+        Users can browse adoptable pets, report strays in need, or list animals for adoption.
+        With a mission to ensure every animal finds a safe, loving home — we’re here to help.</p>
+    </div>
+    <div class="about-image">
+      <img src="mainpage.jpg" alt="About Us">
+    </div>
+  </section>
+
+  
+
+  <!-- Report Stray Section -->
+  <section id="stray" class="stray">
+    <h2>Found a Stray Animal?</h2>
+    <p>Help us rescue animals in need by reporting stray or abandoned pets.</p>
+    <form class="stray-form">
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <input type="text" placeholder="Location of the Stray" required>
+      <textarea placeholder="Describe the Animal and Situation" required></textarea>
+      <button type="submit" class="btn">Submit Report</button>
+    </form>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <p>Have questions or want to get involved? Reach out to us!</p>
+    <form>
+      <input type="text" placeholder="Your Name" required>
+      <input type="email" placeholder="Your Email" required>
+      <input type="text" placeholder="Phone Number">
+      <textarea placeholder="Your Message" required></textarea>
+      <button type="submit" class="btn">Send Message</button>
+    </form>
+  </section>
+  
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2023 PawConnect. All rights reserved.</p>
+    <div class="social-links">
+      <a href="#"><img src="images/facebook-icon.png" alt="Facebook"></a>
+      <a href="#"><img src="images/instagram-icon.png" alt="Instagram"></a>
+      <a href="#"><img src="images/twitter-icon.png" alt="Twitter"></a>
+    </div>
+  </footer>
+  <script src="js/strayReport.js"></script>
+  
+
+</body>
+</html>

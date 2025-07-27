@@ -1,0 +1,110 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f4f4f4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Full viewport height */
+}
+
+/* Signup Container */
+.signup-container {
+  background-color: #ffffff;
+  padding: 3rem; /* Increased padding (1.5x) */
+  border-radius: 15px; /* Slightly larger border radius */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Slightly larger shadow */
+  width: 100%;
+  max-width: 600px; /* Increased max-width (1.5x) */
+  text-align: center;
+}
+
+.signup-container h2 {
+  font-size: 3rem; /* Increased from 2rem (1.5x) */
+  margin-bottom: 1.5rem; /* Increased margin (1.5x) */
+  color: #333;
+}
+
+/* Form Container */
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Increased gap for better spacing */
+  width: 100%;
+}
+
+/* Input Fields */
+input {
+  width: 100%;
+  padding: 1.125rem; /* Increased padding (1.5x) */
+  border: 1px solid #ddd;
+  border-radius: 7.5px; /* Slightly larger border radius */
+  font-size: 1.5rem; /* Increased font size (1.5x) */
+  font-family: 'Poppins', sans-serif;
+}
+
+input:focus {
+  border-color: #ee6cb4; /* Your existing color */
+  outline: none;
+  box-shadow: 0 0 5px rgba(238, 108, 180, 0.5); /* Added focus effect */
+}
+
+/* Button */
+button {
+  width: 100%;
+  padding: 1.125rem; /* Increased padding (1.5x) */
+  background-color: #ee6cb4; /* Your existing color */
+  color: #ffffff;
+  border: none;
+  border-radius: 7.5px; /* Slightly larger border radius */
+  font-size: 1.5rem; /* Increased font size (1.5x) */
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #697de2; /* Your existing hover color */
+}
+
+/* Error Message */
+.error-message {
+  color: #ff0000; /* Red color for errors */
+  font-size: 1.35rem; /* Increased font size (1.5x) */
+  margin-top: 0.75rem; /* Increased margin (1.5x) */
+  text-align: center;
+}
+
+/* Link */
+.form-container p {
+  font-size: 1.5rem; /* Increased font size (1.5x) */
+  text-align: center;
+  margin-top: 1.5rem; /* Increased margin (1.5x) */
+}
+
+.form-container a {
+  color: #ee6cb4; /* Your existing color */
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.form-container a:hover {
+  color: #697de2; /* Your existing hover color */
+}
+
+/* Image Section */
+.image-section {
+  margin-bottom: 2rem; /* Spacing below the image */
+}
+
+.image-section img {
+  width: 100%;
+  max-width: 300px; /* Adjust image size */
+  border-radius: 10px; /* Rounded corners for the image */
+}

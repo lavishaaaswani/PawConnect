@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Approve Pet Listings - PawConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    /* [KEEPING YOUR ORIGINAL STYLES UNCHANGED HERE] */
+    :root {
+      --primary: #ee6cb4;
+      --primary-dark: #d45b9d;
+      --success: #28a745;
+      --danger: #dc3545;
+      --gray: #6c757d;
+      --dark: #343a40;
+      --light: #f8f9fa;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: var(--light);
+      color: #333;
+      line-height: 1.6;
+    }
+
+    .wrapper {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: white;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 250px;
+      padding: 1.5rem;
+      position: fixed;
+      height: 100vh;
+    }
+
+    .logo {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .logo img {
+      max-width: 150px;
+      height: auto;
+    }
+
+    nav ul {
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-bottom: 1rem;
+    }
+
+    nav ul li a {
+      display: block;
+      padding: 0.75rem 1rem;
+      color: #555;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      margin-left: 250px;
+      padding: 2rem;
+    }
+
+    h1 {
+      color: var(--dark);
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 0.5rem;
+    }
+
+    .listing-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 2rem;
+    }
+
+    .pet-image {
+      width: 200px;
+      height: 200px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 3px solid #eee;
+    }
+
+    .pet-info {
+      flex: 1;
+    }
+
+    .pet-info h3 {
+      margin-top: 0;
+      color: var(--dark);
+    }
+
+    .detail-row {
+      display: flex;
+      margin-bottom: 0.5rem;
+    }
+
+    .detail-label {
+      font-weight: 500;
+      min-width: 120px;
+      color: var(--gray);
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .approve-btn {
+      background: var(--success);
+      color: white;
+    }
+
+    .reject-btn {
+      background: var(--danger);
+      color: white;
+    }
+
+    .info-btn {
+      background: var(--primary);
+      color: white;
+    }
+
+    .status-pending {
+      color: #ff9800;
+      font-weight: 600;
+    }
+
+    .submitted-by {
+      font-style: italic;
+      color: var(--gray);
+      margin-top: 1rem;
+    }
+
+    @media (max-width: 992px) {
+      .wrapper {
+        flex-direction: column;
+      }
+
+      header {
+        width: 100%;
+        height: auto;
+        position: relative;
+        padding: 1rem;
+      }
+
+      main {
+        margin-left: 0;
+        padding: 1.5rem;
+      }
+
+      .logo img {
+        max-width: 120px;
+      }
+
+      nav ul {
+        display: flex;
+        gap: 0.5rem;
+      }
+
+      nav ul li {
+        margin-bottom: 0;
+      }
+
+      nav ul li a {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+      }
+
+      .listing-card {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .pet-image {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <nav>
+        <div class="logo">
+          <img src="Images/logo.jpeg" alt="PawConnect Logo" />
+        </div>
+        <ul>
+          <li><a href="admin.html">Dashboard</a></li>
+          <li><a href="manage.html" class="active">Manage Listings</a></li>
+          <li><a href="reviewadoption.html">Adoption Requests</a></li>
+          <li><a href="strayreports.html">Stray Reports</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <h1>Pending Pet Listings</h1>
+      <div id="listingContainer"></div>
+    </main>
+  </div>
+
+  <script>
+  function approveListing(listingId) {
+  if (confirm("Approve this listing to publish it publicly?")) {
+    fetch("/api/pets/" + listingId + "/status", {
+      method: "PATCH",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ status: 'approved' })
+    })
+    .then(function(response) {
+      if (response.ok) {
+        const card = document.querySelector('.listing-card[data-id="' + listingId + '"]');
+        if (card) card.remove();
+        alert("Listing approved and published!");
+      } else {
+        response.json().then(err => {
+          alert("Error: " + (err.error || "Something went wrong"));
+        });
+      }
+    })
+    .catch(function(error) {
+      console.error("Error approving listing:", error);
+      alert("Error connecting to the server.");
+    });
+  }
+}
+
+    
+
+async function rejectListing(listingId) {
+  const reason = prompt("Please specify reason for rejection:");
+  
+  if (reason === null) {
+    return; // User clicked cancel
+  }
+  
+  if (!reason.trim()) {
+    alert("Please provide a reason for rejection");
+    return rejectListing(listingId); // Re-prompt
+  }
+
+  try {
+    const response = await fetch(`/api/pets/${listingId}/status`, {
+      method: "PATCH",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        status: 'rejected',
+        requestMessage: reason 
+      })
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to reject listing');
+    }
+
+    // Remove the rejected listing from view
+    const card = document.querySelector(`.listing-card[data-id="${listingId}"]`);
+    if (card) {
+      card.style.transition = 'opacity 0.3s';
+      card.style.opacity = '0';
+      setTimeout(() => card.remove(), 300);
+    }
+    
+    alert(`Listing rejected successfully. Reason: ${reason}`);
+    
+  } catch (error) {
+    console.error("Rejection error:", error);
+    alert(`Error: ${error.message}`);
+  }
+}
+
+    function requestMoreInfo(listingId) {
+      const message = prompt("What additional information do you need?");
+      if (message) {
+        alert("Request sent to user!");
+        console.log(`Info requested for ${listingId}: ${message}`);
+        // In real app: send email/notification to user
+      }
+    }
+
+    async function fetchPendingListings() {
+      try {
+        const res = await fetch("/api/pets/pending");
+        const data = await res.json();
+        const container = document.getElementById("listingContainer");
+
+        data.forEach((pet) => {
+          const listing = document.createElement("div");
+          listing.className = "listing-card";
+          listing.setAttribute("data-id", pet._id); // for safe selection
+          listing.innerHTML = `
+            
+            <img src="/uploads/${pet.image}" class="pet-image" alt="${pet.name}">
+
+            <div class="pet-info">
+              <h3>${pet.name}</h3>
+              <div class="detail-row"><span class="detail-label">Status:</span><span class="status-pending">Pending Approval</span></div>
+              <div class="detail-row"><span class="detail-label">Breed:</span><span>${pet.breed}</span></div>
+              <div class="detail-row"><span class="detail-label">Age:</span><span>${pet.age}</span></div>
+              <div class="detail-row"><span class="detail-label">Location:</span><span>${pet.location}</span></div>
+              <div class="detail-row"><span class="detail-label">Description:</span><span>${pet.description}</span></div>
+              <p class="submitted-by">Submitted by: ${pet.contactEmail}</p>
+              <div class="actions">
+                <button class="btn approve-btn" onclick="approveListing('${pet._id}')">Approve</button>
+                <button class="btn reject-btn" onclick="rejectListing('${pet._id}')">Reject</button>
+                <button class="btn info-btn" onclick="requestMoreInfo('${pet._id}')">Request Info</button>
+              </div>
+            </div>
+          `;
+          container.appendChild(listing);
+        });
+      } catch (error) {
+        console.error("Error fetching listings:", error);
+      }
+    }
+
+    window.onload = fetchPendingListings;
+  </script>
+</body>
+</html>

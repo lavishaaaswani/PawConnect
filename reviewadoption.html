@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Adoption Requests - PawConnect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #ee6cb4;
+            --primary-dark: #d45b9d;
+            --secondary: #697de2;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --gray: #6c757d;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .wrapper {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            padding: 1.5rem;
+            position: fixed;
+            height: 100vh;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo img {
+            max-width: 150px;
+            height: auto;
+        }
+        
+        nav ul {
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-bottom: 1rem;
+        }
+        
+        nav ul li a {
+            display: block;
+            padding: 0.75rem 1rem;
+            color: #555;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        nav ul li a:hover, nav ul li a.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        /* Main Content */
+        main {
+            flex: 1;
+            margin-left: 250px;
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            font-size: 2rem;
+        }
+        
+        /* Filter and Search Section */
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-bar {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px 0 0 6px;
+            font-size: 1rem;
+        }
+        
+        .search-bar button {
+            padding: 0 1.5rem;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0 6px 6px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-bar button:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .filter-group label {
+            font-weight: 500;
+            color: var(--gray);
+        }
+        
+        .filter-group select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+        }
+        
+        /* Request Cards */
+        .requests-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .request-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .request-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .request-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .request-id {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .request-date {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .request-body {
+            padding: 1.5rem;
+        }
+        
+        .pet-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pet-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 1rem;
+            border: 3px solid var(--primary);
+        }
+        
+        .pet-details h3 {
+            margin-bottom: 0.25rem;
+            color: var(--dark);
+        }
+        
+        .pet-details p {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .applicant-details {
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-row {
+            display: flex;
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-label {
+            font-weight: 500;
+            min-width: 120px;
+            color: var(--gray);
+        }
+        
+        .detail-value {
+            flex: 1;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .request-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            flex: 1;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #218838;
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #5a6fd1;
+        }
+        
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        /* Modal for Detailed View */
+        .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        overflow-y: auto;
+        padding: 2rem 0;
+    }
+    
+    .modal-content {
+        background-color: white;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 800px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        position: relative;
+    }
+    
+    .modal-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: sticky;
+        top: 0;
+        background: white;
+        z-index: 10;
+    }
+    
+    .modal-header h2 {
+        color: var(--dark);
+        margin: 0;
+    }
+    
+    .close-modal {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--gray);
+        padding: 0.5rem;
+        line-height: 1;
+    }
+    
+    .modal-body {
+        padding: 1.5rem;
+    }
+    
+    /* Detailed View Content */
+    .detail-view {
+        padding: 0.5rem;
+    }
+    
+    .detail-view .pet-info {
+        display: flex;
+        align-items: center;
+        margin-bottom: 2rem;
+        gap: 1.5rem;
+    }
+    
+    .detail-view .pet-info img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 4px solid var(--primary);
+        flex-shrink: 0;
+    }
+    
+    .detail-view .pet-info h2 {
+        margin: 0 0 0.25rem 0;
+        color: var(--dark);
+    }
+    
+    .detail-view .pet-info p {
+        font-size: 1.1rem;
+        color: var(--gray);
+        margin: 0;
+    }
+    
+    .detail-section {
+        margin-bottom: 2rem;
+    }
+    
+    .detail-section h3 {
+        color: var(--dark);
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .detail-row {
+        display: flex;
+        margin-bottom: 0.75rem;
+        gap: 1rem;
+    }
+    
+    .detail-label {
+        font-weight: 500;
+        min-width: 180px;
+        color: var(--gray);
+    }
+    
+    .detail-value {
+        flex: 1;
+    }
+    
+    .notes-textarea {
+        width: 100%;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        min-height: 100px;
+        margin-bottom: 1rem;
+        font-family: 'Poppins', sans-serif;
+        font-size: 1rem;
+    }
+    
+    .modal-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.75rem;
+        margin-top: 1.5rem;
+    }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .wrapper {
+                flex-direction: column;
+            }
+            
+            header {
+                width: 100%;
+                height: auto;
+                position: relative;
+                padding: 1rem;
+            }
+            
+            main {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+            
+            .logo img {
+                max-width: 120px;
+            }
+            
+            nav ul {
+                display: flex;
+                gap: 0.5rem;
+            }
+            
+            nav ul li {
+                margin-bottom: 0;
+            }
+            
+            nav ul li a {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .requests-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .search-bar {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Wrapper for Flexbox -->
+    <div class="wrapper">
+        <!-- Header -->
+        <header>
+            <nav>
+                <div class="logo">
+                    <img src="Images/logo.jpeg" alt="PawConnect Logo">
+                </div>
+                <ul>
+                    <li><a href="admin.html">Dashboard</a></li>
+                    <li><a href="manage.html">Manage Pet Listings</a></li>
+                    <li><a href="reviewadoption.html" class="active">Review Adoption Requests</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main Content -->
+        <main class="review-adoption-requests">
+            <h1>Adoption Requests Review</h1>
+            
+            <!-- Controls Section -->
+            <div class="controls">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search requests by user, pet, or ID...">
+                    <button class="btn btn-primary">Search</button>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="status-filter">Status:</label>
+                    <select id="status-filter">
+                        <option value="all">All Statuses</option>
+                        <option value="pending">Pending</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="date-filter">Date:</label>
+                    <select id="date-filter">
+                        <option value="all">All Dates</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Adoption Requests List -->
+            <div class="requests-list">
+                <!-- Sample Request Card 1 -->
+                <div class="request-card">
+                    <div class="request-header">
+                        <span class="request-id">Request #AD-2023-001</span>
+                        <span class="request-date">Submitted: 2 days ago</span>
+                    </div>
+                    <div class="request-body">
+                        <div class="pet-info">
+                            <img src="Images/dog1.jpg" alt="Buddy" class="pet-image">
+                            <div class="pet-details">
+                                <h3>Buddy</h3>
+                                <p>Golden Retriever • 2 years old</p>
+                                <p>New York Shelter</p>
+                            </div>
+                        </div>
+                        
+                        <div class="applicant-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Applicant:</span>
+                                <span class="detail-value">John Doe (john.doe@example.com)</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Contact:</span>
+                                <span class="detail-value">(555) 123-4567</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Residence:</span>
+                                <span class="detail-value">House (Owned) in Brooklyn, NY</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Experience:</span>
+                                <span class="detail-value">Some experience with dogs</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value">
+                                    <span class="status-badge status-pending">Pending Review</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="request-actions">
+                            <button class="btn btn-primary" onclick="updateStatus(this, 'approved')">Approve</button>
+                            <button class="btn btn-danger" onclick="updateStatus(this, 'rejected')">Reject</button>
+                            <button class="btn btn-secondary" onclick="viewDetails('request1')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sample Request Card 2 (Approved) -->
+                <div class="request-card">
+                    <div class="request-header">
+                        <span class="request-id">Request #AD-2023-002</span>
+                        <span class="request-date">Submitted: 1 week ago</span>
+                    </div>
+                    <div class="request-body">
+                        <div class="pet-info">
+                            <img src="Images/besttabby.jpg" alt="Luna" class="pet-image">
+                            <div class="pet-details">
+                                <h3>Luna</h3>
+                                <p>Siamese Cat • 1 year old</p>
+                                <p>Los Angeles Shelter</p>
+                            </div>
+                        </div>
+                        
+                        <div class="applicant-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Applicant:</span>
+                                <span class="detail-value">Jane Smith (jane.smith@example.com)</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Contact:</span>
+                                <span class="detail-value">(555) 987-6543</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Residence:</span>
+                                <span class="detail-value">Apartment (Rented) in Santa Monica, CA</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Experience:</span>
+                                <span class="detail-value">Very experienced with cats</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value">
+                                    <span class="status-badge status-approved">Approved</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="request-actions">
+                            <button class="btn btn-primary" disabled>Approve</button>
+                            <button class="btn btn-danger" disabled>Reject</button>
+                            <button class="btn btn-secondary" onclick="viewDetails('request2')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sample Request Card 3 -->
+                <div class="request-card">
+                    <div class="request-header">
+                        <span class="request-id">Request #AD-2023-003</span>
+                        <span class="request-date">Submitted: 3 days ago</span>
+                    </div>
+                    <div class="request-body">
+                        <div class="pet-info">
+                            <img src="Images/rabbit.jpg" alt="Daisy" class="pet-image">
+                            <div class="pet-details">
+                                <h3>Daisy</h3>
+                                <p>Holland Lop Rabbit • 1.5 years old</p>
+                                <p>Chicago Shelter</p>
+                            </div>
+                        </div>
+                        
+                        <div class="applicant-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Applicant:</span>
+                                <span class="detail-value">Alice Johnson (alice.j@example.com)</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Contact:</span>
+                                <span class="detail-value">(555) 456-7890</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Residence:</span>
+                                <span class="detail-value">Condo (Owned) in Chicago, IL</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Experience:</span>
+                                <span class="detail-value">No prior experience with rabbits</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Status:</span>
+                                <span class="detail-value">
+                                    <span class="status-badge status-pending">Pending Review</span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="request-actions">
+                            <button class="btn btn-primary" onclick="updateStatus(this, 'approved')">Approve</button>
+                            <button class="btn btn-danger" onclick="updateStatus(this, 'rejected')">Reject</button>
+                            <button class="btn btn-secondary" onclick="viewDetails('request3')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Detailed View Modal -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Adoption Request Details</h2>
+                <button class="close-modal" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-details-content">
+                <!-- Content will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to update request status
+        function updateStatus(button, newStatus) {
+            const card = button.closest('.request-card');
+            const statusBadge = card.querySelector('.status-badge');
+            
+            // Update status badge
+            statusBadge.className = `status-badge status-${newStatus}`;
+            statusBadge.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+            
+            // Disable all action buttons in this card
+            const buttons = card.querySelectorAll('.request-actions .btn');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+            });
+            
+            // In a real app, you would send this to your backend
+            console.log(`Status updated to: ${newStatus}`);
+            
+            // Show confirmation (could be a toast notification in a real app)
+            alert(`Request has been ${newStatus}.`);
+        }
+        
+        // Function to view detailed request
+        function viewDetails(requestId) {
+            // In a real app, you would fetch these details from your backend
+            const details = {
+                'request1': {
+                    petName: 'Buddy',
+                    petType: 'Golden Retriever',
+                    applicant: 'John Doe',
+                    applicationDate: '2023-05-15',
+                    reason: 'I grew up with golden retrievers and have been looking to adopt one for my family. We have a large backyard and I work from home, so I can give Buddy plenty of attention and exercise.',
+                    hoursAlone: 2,
+                    currentPets: 'None',
+                    vetReference: 'Dr. Smith at Brooklyn Vet Clinic (555-123-7890)',
+                    homeVisit: 'Scheduled for 2023-05-20',
+                    notes: 'Applicant seems very knowledgeable about the breed.'
+                },
+                'request2': {
+                    petName: 'Luna',
+                    petType: 'Siamese Cat',
+                    applicant: 'Jane Smith',
+                    applicationDate: '2023-05-08',
+                    reason: 'I recently lost my 15-year-old Siamese and feel ready to welcome another cat into my home. I have experience with the breed and understand their needs.',
+                    hoursAlone: 4,
+                    currentPets: 'None',
+                    vetReference: 'Dr. Johnson at Santa Monica Animal Hospital (555-987-1234)',
+                    homeVisit: 'Completed on 2023-05-12 - Approved',
+                    notes: 'Excellent home environment for a cat. Previous cat lived to 15 years.'
+                },
+                'request3': {
+                    petName: 'Daisy',
+                    petType: 'Holland Lop Rabbit',
+                    applicant: 'Alice Johnson',
+                    applicationDate: '2023-05-12',
+                    reason: 'My daughter has been researching rabbit care for months and we feel ready to adopt. We have a safe space prepared in our living room and I work from home to supervise.',
+                    hoursAlone: 1,
+                    currentPets: 'None',
+                    vetReference: 'Dr. Wilson at Chicago Exotic Vet (555-456-3456)',
+                    homeVisit: 'Pending scheduling',
+                    notes: 'First-time rabbit owner but has done extensive research.'
+                }
+            };
+            
+            const requestData = details[requestId];
+            const modalContent = document.getElementById('modal-details-content');
+            
+            // Build the detailed view HTML
+            modalContent.innerHTML = `
+                <div class="detail-view">
+                    <div class="pet-info" style="margin-bottom: 2rem;">
+                        <img src="Images/${requestData.petName.toLowerCase()}.jpg" alt="${requestData.petName}" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 4px solid var(--primary); float: left; margin-right: 1.5rem;">
+                        <h2 style="margin-top: 0.5rem;">${requestData.petName}</h2>
+                        <p style="font-size: 1.2rem; color: var(--gray);">${requestData.petType}</p>
+                    </div>
+                    
+                    <div style="clear: both;"></div>
+                    
+                    <h3 style="margin: 1.5rem 0 1rem; color: var(--dark);">Applicant Information</h3>
+                    <div class="detail-row" style="margin-bottom: 0.75rem;">
+                        <span style="font-weight: 500; min-width: 150px; display: inline-block;">Full Name:</span>
+                        <span>${requestData.applicant}</span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0.75rem;">
+                        <span style="font-weight: 500; min-width: 150px; display: inline-block;">Application Date:</span>
+                        <span>${requestData.applicationDate}</span>
+                    </div>
+                    
+                    <h3 style="margin: 1.5rem 0 1rem; color: var(--dark);">Adoption Details</h3>
+                    <div class="detail-row" style="margin-bottom: 0.75rem;">
+                        <span style="font-weight: 500; min-width: 150px; display: inline-block;">Reason for Adoption:</span>
+                        <span>${requestData.reason}</span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0.75rem;">
+                        <span style="font-weight: 500; min-width: 150px; display: inline-block;">Hours Pet Will Be Alone:</span>
+                        <span>${requestData.hoursAlone} hours/day</span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0.75rem;">
+                        <span style="font-weight: 500; min-width: 150px; display: inline-block;">Current Pets:</span>
+                        <span>${requestData.currentPets}</span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0.75rem;">
+                        <span style="font-weight: 500; min-width: 150px; display: inline-block;">Veterinarian Reference:</span>
+                        <span>${requestData.vetReference}</span>
+                    </div>
+                    <div class="detail-row" style="margin-bottom: 0.75rem;">
+                        <span style="font-weight: 500; min-width: 150px; display: inline-block;">Home Visit Status:</span>
+                        <span>${requestData.homeVisit}</span>
+                    </div>
+                    
+                    <h3 style="margin: 1.5rem 0 1rem; color: var(--dark);">Staff Notes</h3>
+                    <textarea style="width: 100%; padding: 1rem; border: 1px solid #ddd; border-radius: 6px; min-height: 100px; margin-bottom: 1rem;">${requestData.notes}</textarea>
+                    
+                    <div style="text-align: right; margin-top: 1.5rem;">
+                        <button class="btn btn-primary" style="margin-right: 0.5rem;" onclick="saveNotes('${requestId}')">Save Notes</button>
+                        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            `;
+            
+            // Show the modal
+            document.getElementById('details-modal').style.display = 'flex';
+        }
+        
+        // Function to close modal
+        function closeModal() {
+            document.getElementById('details-modal').style.display = 'none';
+        }
+        
+        // Function to save notes (would connect to backend in real app)
+        function saveNotes(requestId) {
+            const notes = document.querySelector('#modal-details-content textarea').value;
+            console.log(`Saving notes for ${requestId}:`, notes);
+            alert('Notes saved successfully!');
+            closeModal();
+        }
+    </script>
+</body>
+</html>

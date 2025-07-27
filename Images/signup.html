@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up / Login - PawConnect</title>
+    <link rel="stylesheet" href="signupstyle.css">
+</head>
+<body>
+    <div class="auth-container">
+        <h2>Welcome to PawConnect</h2>
+        <div class="form-container">
+            <form id="signup-form" onsubmit="return validateSignUp()">
+                <h3>Sign Up</h3>
+                <input type="text" id="name" placeholder="Full Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password (min 6 chars)" required>
+                <button type="submit">Sign Up</button>
+                <p id="signup-error" class="error-message"></p>
+            </form>
+
+            <form id="login-form" onsubmit="return validateLogin()">
+                <h3>Login</h3>
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit">Login</button>
+                <p id="login-error" class="error-message"></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function validateSignUp() {
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let password = document.getElementById("password").value.trim();
+            let errorMessage = document.getElementById("signup-error");
+
+            if (name === "" || email === "" || password === "") {
+                errorMessage.textContent = "All fields are required.";
+                return false;
+            }
+            
+            if (!/\S+@\S+\.\S+/.test(email)) {
+                errorMessage.textContent = "Enter a valid email.";
+                return false;
+            }
+
+            if (password.length < 6) {
+                errorMessage.textContent = "Password must be at least 6 characters.";
+                return false;
+            }
+
+            errorMessage.textContent = "";
+            return true;
+        }
+
+        function validateLogin() {
+            let email = document.getElementById("login-email").value.trim();
+            let password = document.getElementById("login-password").value.trim();
+            let errorMessage = document.getElementById("login-error");
+
+            if (email === "" || password === "") {
+                errorMessage.textContent = "All fields are required.";
+                return false;
+            }
+
+            errorMessage.textContent = "";
+            return true;
+        }
+    </script>
+</body>
+</html>

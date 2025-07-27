@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - PawConnect</title>
+    <link rel="stylesheet" href="login-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body style="background-image: url('images/bg2.jpg'); background-size: cover; background-position: top; background-repeat: no-repeat;">
+    <div class="auth-container">
+
+        <h2>Sign Up</h2>
+        <div class="form-container">
+            <form id="signup-form">
+                <input type="text" id="name" placeholder="Full Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password (min 6 chars)" required>
+                <button type="submit" href="viewpets.html">Sign Up</button>
+                <p id="signup-error" class="error-message"></p>
+                <input type="hidden" name="role" id="roleInput">
+            </form>
+            <p>Already have an account? <a href="login.html">Login here</a></p>
+        </div>
+    </div>
+    <script>
+        document.getElementById("signup-form").addEventListener("submit", function (e) {
+          e.preventDefault(); // Prevent default form submission
+      
+          const name = document.getElementById("name").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value.trim();
+          const errorMessage = document.getElementById("signup-error");
+      
+          // Reset error message
+          errorMessage.textContent = "";
+      
+          // 1. Validate fields
+          if (!name || !email || !password) {
+            errorMessage.textContent = "All fields are required.";
+            return;
+          }
+      
+          const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!emailPattern.test(email)) {
+            errorMessage.textContent = "Enter a valid email address.";
+            return;
+          }
+      
+          if (password.length < 6) {
+            errorMessage.textContent = "Password must be at least 6 characters long.";
+            return;
+          }
+      
+          // 2. Check role from URL
+          const urlParams = new URLSearchParams(window.location.search);
+          const role = urlParams.get("role");
+      
+          if (!role || (role !== "adopter" && role !== "lister")) {
+            errorMessage.textContent = "Invalid role. Please access sign-up from the correct link.";
+            return;
+          }
+      
+          // 3. Send data to backend
+          fetch("/api/signup", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              name,
+              email,
+              password,
+              role,
+            }),
+          })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.message === "User registered successfully.") {
+                alert("Signup successful! Redirecting you to your dashboard...");
+              window.location.href = role === "adopter" ? "viewpets.html" : "petlist.html";
+            } else {
+              errorMessage.textContent = data.message;
+            }
+          })
+          .catch((err) => {
+            console.error("Error during signup:", err);
+            errorMessage.textContent = "Something went wrong. Please try again.";
+          });
+        });
+      </script>
+      
+  
+    
+      
+</body>
+</html>
